@@ -15,8 +15,7 @@ public class Tree {
             } else {
                 res = delete(no, root);
             }
-            return res;
-        }
+            return res;        }
         System.out.println("this tree is already empty!");
         return null;
     }

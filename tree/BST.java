@@ -110,21 +110,29 @@ public class BST {
                 current.setNum(res);
             }
             //2. has only one leaf node
-            else{
+            else {
                 if (null != current.getLeft()) {
-                    if (current == parent.getLeft()) {
-                        parent.setLeft(current.getLeft());
-                    }
-                    if (current == parent.getRight()) {
-                        parent.setRight(current.getLeft());
+                    if (null != parent) {
+                        if (current == parent.getLeft()) {
+                            parent.setLeft(current.getLeft());
+                        }
+                        if (current == parent.getRight()) {
+                            parent.setRight(current.getLeft());
+                        }
+                    } else {
+                        this.root = current.getLeft();
                     }
                 }
                 if (null != current.getRight()) {
-                    if (current == parent.getLeft()) {
-                        parent.setLeft(current.getRight());
-                    }
-                    if (current == parent.getRight()) {
-                        parent.setRight(current.getRight());
+                    if (null != parent) {
+                        if (current == parent.getLeft()) {
+                            parent.setLeft(current.getRight());
+                        }
+                        if (current == parent.getRight()) {
+                            parent.setRight(current.getRight());
+                        }
+                    } else {
+                        this.root = current.getRight();
                     }
                 }
             }
@@ -173,21 +181,21 @@ class BSTNode {
     }
 
     public void add(BSTNode node) {
-        if (node.getNum() < this.getNum()) {
-            if (null == this.getLeft()) {
-                this.setLeft(node);
+        if (node.num < this.num) {
+            if (null == this.left) {
+                this.left = node;
                 return;
             }
             this.getLeft().add(node);
         }
-        if (node.getNum() > this.getNum()) {
-            if (null == this.getRight()) {
-                this.setRight(node);
+        if (node.num > this.num) {
+            if (null == this.right) {
+                this.right = node;
                 return;
             }
-            this.getRight().add(node);
+            this.right.add(node);
         }
-        if (node.getNum() == this.getNum()) {
+        if (node.num == this.num) {
             return;
         }
     }

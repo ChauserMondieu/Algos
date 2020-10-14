@@ -106,8 +106,8 @@ public class Sorting {
     }
 
     public void select(int[] arr) {
-        int min;
         int index;
+        int min;
         int temp;
         for (int i = 0; i < this.size; i++) {
             min = arr[i];
@@ -123,7 +123,6 @@ public class Sorting {
             arr[i] = temp;
         }
     }
-
 
     public void insert(int[] arr) {
         int value;
@@ -155,17 +154,17 @@ public class Sorting {
     }
 
     public void shellInsert(int[] arr) {
-        int value;
         int index;
+        int value;
         for (int gap = this.size / 2; gap > 0; gap /= 2) {
             for (int i = gap; i < this.size; i++) {
                 value = arr[i];
-                index = i - gap;
-                while (index >= 0 && value < arr[index]) {
-                    arr[index + gap] = arr[index];
-                    index -= gap;
+                index = i - 1;
+                while (index >= 0 && arr[index] > value) {
+                    arr[index + 1] = arr[index];
+                    index--;
                 }
-                arr[index + gap] = value;
+                arr[index + 1] = value;
             }
         }
     }
@@ -202,14 +201,15 @@ public class Sorting {
         }
     }
 
-    private void mergeSort(int[] arr, int left, int mid, int right, int[] temp) {
+    public void mergeSort(int[] arr, int left, int mid, int right, int[] temp) {
         int l = left;
         int r = mid + 1;
         int t = 0;
         while (l <= mid && r <= right) {
             if (arr[l] < arr[r]) {
                 temp[t++] = arr[l++];
-            } else {
+            }
+            if (arr[r] < arr[l]) {
                 temp[t++] = arr[r++];
             }
         }
@@ -220,8 +220,8 @@ public class Sorting {
             temp[t++] = arr[r++];
         }
 
-        int cursor = left;
         t = 0;
+        int cursor = left;
         while (cursor <= right) {
             arr[cursor++] = temp[t++];
         }
@@ -231,12 +231,15 @@ public class Sorting {
         int[][] bucket = new int[10][this.size];
         int[] cursor = new int[10];
         int max = arr[0];
-        for (int i = 0; i < this.size; i++) {
+
+        for (int i = 1; i < this.size; i++) {
             if (arr[i] > max) {
                 max = arr[i];
             }
         }
+
         int digit = (max + "").length();
+
         for (int i = 0, n = 1; i < digit; i++, n *= 10) {
             for (int j = 0; j < this.size; j++) {
                 int temp = arr[j] / n % 10;
@@ -246,7 +249,7 @@ public class Sorting {
 
             int index = 0;
             for (int k = 0; k < 10; k++) {
-                if (cursor[k] != 0) {
+                if (0 != cursor[k]) {
                     for (int l = 0; l < cursor[k]; l++) {
                         arr[index++] = bucket[k][l];
                         bucket[k][l] = 0;
@@ -273,7 +276,7 @@ public class Sorting {
     private void shiftDown(int[] arr, int index, int length) {
         int temp = arr[index];
         for (int i = index * 2 + 1; i < length; i = i * 2 + 1) {
-            if (i + 1 < length && arr[i] < arr[i + 1]) {
+            if (i + 1 < length && arr[i + 1] > arr[i]) {
                 i++;
             }
             if (arr[i] > temp) {
@@ -287,21 +290,22 @@ public class Sorting {
     }
 
     public int binarySearch(int[] arr, int left, int right, int value) {
-        if (value < arr[left] || value > arr[right]) {
+        if (value > arr[right] || value < arr[left]) {
             return -1;
+        } else {
+            if (left > right) {
+                return -1;
+            } else {
+                int mid = (left + right) / 2;
+                if (value < arr[mid]) {
+                    return binarySearch(arr, left, mid - 1, value);
+                } else if (value > arr[mid]) {
+                    return binarySearch(arr, mid + 1, right, value);
+                } else {
+                    return mid;
+                }
+            }
         }
-        if(left >right){
-            return -1;
-        }
-        int mid = (left + right) / 2;
-        int midValue = arr[mid];
-        if (value < midValue) {
-            return binarySearch(arr, left, mid - 1, value);
-        }
-        if (value > midValue) {
-            return binarySearch(arr, mid + 1, right, value);
-        }else{
-            return mid;
-        }
+
     }
 }
